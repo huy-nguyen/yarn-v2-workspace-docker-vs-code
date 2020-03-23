@@ -1,0 +1,70 @@
+version: "2.4"
+services:
+  base:
+    build:
+      args:
+        REPO_MOUNT_POINT: $REPO_MOUNT_POINT
+        REPO_MOUNT_POINT_PARENT: $REPO_MOUNT_POINT_PARENT
+        MAIN_YARN_DIR: $MAIN_YARN_DIR
+        COMMIT_YARN_CLI: $COMMIT_YARN_CLI
+        COMMIT_YARN_WORKSPACE_TOOLS_PLUGIN: $COMMIT_YARN_WORKSPACE_TOOLS_PLUGIN
+      context: .
+
+    # Image name is set explicitly because it's shared by other services:
+    image: $BASE_IMAGE_NAME
+
+    # Because `base` is strictly a utility service that is not part of the
+    # app's run time, its `scale` is set to zero so that it doesn't run when
+    # `docker-compose up` is invoked.
+    scale: 0
+
+  back-end:
+    command: ["yarn", "workspace", "back-end", "start"]
+    environment:
+      PORT: $PORT
+    image: $BASE_IMAGE_NAME
+
+    # Ensure proper handling of signals:
+    init: true
+
+    ports:
+      - $BACK_END_HOST_PORT:$PORT
+
+    volumes:
+      # Mount the codebase into the container:
+      - .:$REPO_MOUNT_POINT:delegated
+
+      # Mount Yarn's directory into the container. The `delegated`
+      # configuration is very important because the Yarn directory will have to
+      # handle a large number of file system reads/writes. See
+      # https://docs.docker.com/docker-for-mac/osxfs-caching/#delegated
+      - main_yarn_dir:$MAIN_YARN_DIR:delegated
+
+
+  front-end:
+    command: ["yarn", "workspace", "front-end", "start"]
+    depends_on:
+      # The `front-end` depends on the `back-end` because of shared volumes:
+      - back-end
+    environment:
+      PORT: $PORT
+      API_URL: http://$BACK_END_HOST_NAME:$BACK_END_HOST_PORT/
+    image: $BASE_IMAGE_NAME
+    init: true
+    ports:
+      - $FRONT_END_HOST_PORT:$PORT
+
+    volumes_from:
+      # Note that both the `front-end` and `back-end` services share the same
+      # volume mounts. Because the `front-end` service re-uses the volumes of
+      # the `back-end` service, if you want to run the `front-end` service in
+      # isolation (`docker-compose run front-end`), you'll need to have either
+      # run `docker-compose up` or `docker-compose run back-end` beforehand in
+      # order to iniatilize the shared volume.
+      - back-end
+
+volumes:
+
+  # Anonymous volume containing Yarn configurations and Yarn-produced
+  # files/directories:
+  main_yarn_dir:

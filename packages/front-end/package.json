@@ -1,0 +1,50 @@
+{
+  "name": "front-end",
+  "scripts": {
+    "build": "yarn typecheck && yarn clean && webpack-cli --config webpack.config.js --mode=production",
+    "clean": "rm -rf dist",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json}\"",
+    "lint": "eslint --fix . --ext .js,.jsx,.ts,.tsx",
+    "serve": "serve dist",
+    "start": "webpack-dev-server --config webpack.config.js --mode=development",
+    "test": "jest --coverage",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "graphiql": "0.17.5",
+    "graphql": "14.6.0",
+    "prop-types": "15.7.2",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@babel/core": "7.9.0",
+    "@babel/preset-env": "7.9.0",
+    "@babel/preset-react": "7.9.1",
+    "@babel/preset-typescript": "7.9.0",
+    "@testing-library/jest-dom": "5.1.1",
+    "@testing-library/react": "10.0.1",
+    "@types/react": "16.9.23",
+    "@types/react-dom": "16.9.5",
+    "@types/testing-library__jest-dom": "5.0.2",
+    "@types/testing-library__react": "9.1.3",
+    "@typescript-eslint/eslint-plugin": "2.24.0",
+    "@typescript-eslint/parser": "2.24.0",
+    "babel-loader": "8.0.6",
+    "css-loader": "3.4.2",
+    "eslint": "6.8.0",
+    "eslint-plugin-react": "7.19.0",
+    "fork-ts-checker-webpack-plugin": "4.1.1",
+    "html-webpack-plugin": "3.2.0",
+    "jest": "25.1.0",
+    "pnp-webpack-plugin": "1.6.4",
+    "prettier": "2.0.1",
+    "serve": "11.3.0",
+    "style-loader": "1.1.3",
+    "typescript": "3.8.3",
+    "webpack": "4.42.0",
+    "webpack-cli": "3.3.11",
+    "webpack-dev-server": "3.10.3"
+  }
+}

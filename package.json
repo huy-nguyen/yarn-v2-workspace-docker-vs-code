@@ -1,0 +1,14 @@
+{
+  "name": "yarn-v2-workspace-docker-vs-code",
+  "license": "MIT",
+  "author": "Huy Nguyen <huy@huy.dev> (https://www.huy.dev)",
+  "devDependencies": {
+    "@yarnpkg/pnpify": "2.0.0-rc.19",
+    "prettier": "2.0.1",
+    "typescript": "3.8.3"
+  },
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ]
+}

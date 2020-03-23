@@ -1,0 +1,18 @@
+.DS_Store
+
+# There's actually no library code installed in `node_modules` but various
+# tools uses it as a temporary cache:
+node_modules
+
+# Build artifacts:
+dist
+
+# Jest's test coverage results directory:
+coverage
+
+# Because we're not using zero installs, these are the files that should be
+# ignored per https://yarnpkg.com/advanced/qa#which-files-should-be-gitignored
+# Patterns mentioned in that link that are under the `.yarn` directory are not
+# added here because they are "lifted" up into the parent directory inside the
+# Docker container.
+.pnp.*
