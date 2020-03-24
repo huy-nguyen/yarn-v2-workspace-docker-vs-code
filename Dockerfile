@@ -3,11 +3,12 @@
 # used by stage 2 to install these dependencies into the final image used for
 # development. The only reason we need a separate stage just for collecting the
 # dependency manifests is that Docker's `COPY` command still does not allow
-# copying based on a glob pattern. Being able to copy only manifests into stage
-# 2 (the `COPY --from=manifests` statement) is important to maximize Docker
-# build cache hit rate. `alpine` is chosen as the base image for the first
-# stage because it's the smallest image that have access to the `cp --parents
-# -t` command (by installing the `coreutils` package).
+# copying based on a glob pattern (see this GitHub issue for more details
+# https://github.com/moby/moby/issues/15858). Being able to copy only manifests
+# into stage 2 (the `COPY --from=manifests` statement) is important to maximize
+# Docker build cache hit rate. `alpine` is chosen as the base image for the
+# first stage because it's the smallest image that have access to the `cp
+# --parents -t` command (by installing the `coreutils` package).
 
 FROM alpine:3.11 as manifests
 RUN apk add coreutils
