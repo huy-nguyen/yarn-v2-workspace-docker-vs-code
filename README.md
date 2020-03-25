@@ -18,6 +18,8 @@ This repo uses a simple full-stack JavaScript web application to demonstrate the
 The demo application is an interactive in-browser explorer of the [Star Wars API](https://swapi.co/), which contains the data about all the Star Wars films, characters, spaceships and so on.
 If you want to quickly try the application out, here is the [online version created by the GraphQL team](http://graphql.org/swapi-graphql).
 
+For a high-level tour of this repo, please see the [accompanying blog post](https://www.huy.dev/yarn-v2-workspace-docker-vs-code-2020-03-23/).
+
 ## Prerequisites
 
 - [Docker](https://docs.docker.com/install/)
@@ -26,12 +28,14 @@ If you want to quickly try the application out, here is the [online version crea
 Because these prerequisites are available on Windows, Mac and Linux, the functionality contained in this repository should be the same across all those platforms.
 
 ## Instructions
+
 To get the demo application up and running, follow these steps:
+
 - `cd` into the project directory.
 - Run `docker-compose build base`.
 - Run `docker-compose up -d`.
 - Navigate to `http://localhost:32804` in your browser
-(`32804` is the default value of the [`$FRONT_END_HOST_PORT`](.env) environment variable).
+  (`32804` is the default value of the [`$FRONT_END_HOST_PORT`](.env) environment variable).
 - To use the preconfigured Docker-based Visual Studio Code development environment, with the Docker containers already up and running, open the Command Palette (Cmd+Shift+P), choose "Remote Container: Open Folder in Container" and choose the `vs-code-container-back-end` in the project directory for the back-end or `vs-code-container-front-end` for the front-end.
 
 ## Available tasks
