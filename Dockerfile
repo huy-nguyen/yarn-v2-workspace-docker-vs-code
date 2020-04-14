@@ -64,13 +64,17 @@ WORKDIR ${REPO_MOUNT_POINT}
 
 USER node
 
-# This is roughly equivalent to running `yarn set version berry`, which 1)
+# The content of the resulting `~/.yarnrc` file in the next step looks like
+# this:
+# yarn-path "/yarn/releases/yarn-berry.js"
+
+# This step is roughly equivalent to running `yarn set version berry`, which 1)
 # downloads the latest version of Yarn v2 CLI executable to the
 # $MAIN_YARN_DIR/releases directory and 2) creates a `.yarnrc` in a location
 # accessible to Yarn that tells the system-wide Yarn (which can be either v1 or
 # v2) where to find the Yarn executable for the *current* project. Note: Hash
 # in the URL is explicitly specified for reproducibility and will need to be
-# updated when new versions are released.
+# updated when new versions of Yarn are released.
 RUN curl -s https://raw.githubusercontent.com/yarnpkg/berry/$COMMIT_YARN_CLI/packages/berry-cli/bin/berry.js > ${MAIN_YARN_DIR}/releases/yarn-berry.js && \
   echo "yarn-path \"${MAIN_YARN_DIR}/releases/yarn-berry.js\"" > ~/.yarnrc
 
@@ -97,7 +101,7 @@ RUN curl -s https://raw.githubusercontent.com/yarnpkg/berry/$COMMIT_YARN_WORKSPA
 #     peerDependencies:
 #       typescript: "*"
 
-# Note that `packageExtensions` is a temporary workaround for
+# Note that the entry for `packageExtensions` is a temporary workaround for
 # `fork-ts-checker-webpack-plugin` because it incorrectly omits `typescript` as
 # a peer dependency. See
 # https://yarnpkg.com/advanced/migration#a-package-is-trying-to-access-another-package-
@@ -123,7 +127,7 @@ COPY --from=manifests --chown=node:node /tmp/manifests  ./
 # Install all dependencies and verify that `yarn.lock` will not be modified
 # during the process. If `yarn.lock` needs to be modified, this step is
 # deliberately designed to fail (Please refer to the article for the remedy.).
-# This is to prevent `yarn.lock` from going out-of-sync with the various
-# `package.json`, which can happen if npm is used as the package manager on the
-# host side.
+# This is to prevent `yarn.lock` from going out-of-sync with the `package.json`
+# files inside each workspace, which can happen if npm is used as the package
+# manager on the host side.
 RUN yarn install --immutable --inline-builds
