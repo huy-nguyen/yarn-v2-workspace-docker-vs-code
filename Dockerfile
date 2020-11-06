@@ -38,7 +38,7 @@ ARG COMMIT_YARN_TYPESCRIPT_PLUGIN
 # https://code.visualstudio.com/docs/remote/containers-advanced#_avoiding-extension-reinstalls-on-container-rebuild
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
-    && apt-get -yqq install --no-install-recommends apt-utils=1.4.9 2>&1
+    && apt-get -yqq install --no-install-recommends apt-utils 2>&1
 
 # Every directory created here is `chown`ed to `node` because all development
 # at container runtime will be done under the `node` user. It's good practice
